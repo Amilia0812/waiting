@@ -12,16 +12,24 @@
 <div class="background"></div>
 
 <div class="container">
-    <h1><span class="highlight">瓦羅蘭</span> 正在加載中，請耐心等待</h1>
-    
-    <!-- 按鈕區塊 -->
-    <div class="button-container">
-        <button id="apex-button">
-            <img src="apex-icon.png" alt="Apex Legends">
-        </button>
-        <button id="shooting-game-button">小靶場</button>
+    <!-- 加載中文字 -->
+    <h1 id="loading-text"><span class="highlight">瓦羅蘭</span> 正在加載中，請耐心等待</h1>
+
+    <!-- 轉圈圈動畫 -->
+    <div class="loading-spinner"></div>
+
+    <!-- Apex 惡搞選項（小圖標） -->
+    <div id="apex-container">
+        <p id="apex-text">這裡建議鬼轉 Apex</p>
+        <img id="apex-logo" src="apex-icon.png" alt="Apex Legends" onclick="switchToValorant()">
     </div>
+
+    <!-- 小靶場按鈕 -->
+    <button id="shooting-game-button">小靶場</button>
 </div>
+
+<!-- 最底部顯示的惡搞文字 -->
+<h2 id="joke-text" style="display: none;">不讓你轉 <span class="highlight">瓦羅蘭</span> 多香啊！</h2>
 
 <script src="script.js"></script>
 
