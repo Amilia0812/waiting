@@ -17,17 +17,13 @@ body, html {
     left: 0;
     width: 100%;
     height: 100vh;
-   .background {
-    background-image: url('valorant-background.png'); /* 刪掉 images/ */
-}
-
+    background-image: url('valorant-background.png'); /* 修改為 main 分支可用的路徑 */
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
     filter: brightness(0.7);
     z-index: -1; /* 確保背景在最底層 */
 }
-
 
 /* 主要內容置中 */
 .container {
@@ -44,7 +40,7 @@ h1 {
     font-size: 32px;
     font-weight: bold;
     margin-bottom: 20px;
-    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.8); /* 增加黑色陰影 */
+    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.8);
 }
 
 .highlight {
@@ -67,35 +63,33 @@ h1 {
     100% { transform: rotate(360deg); }
 }
 
-/* Apex 按鈕 */
-#apex-container {
-    margin-top: 20px;
-}
-
-#apex-text {
-    font-size: 16px;
-    margin-bottom: 5px;
-}
-
 /* Apex 小圖標 */
 #apex-logo {
-    width: 50px; /* 縮小成圖標 */
+    width: 50px;
     cursor: pointer;
-    transition: transform 0.2s;
+    transition: transform 0.2s, width 0.2s ease-in-out, left 0.3s, top 0.3s;
 }
 
 #apex-logo:hover {
     transform: scale(1.2);
 }
 
-/* 最底部的惡搞字 */
-#joke-text {
+/* 固定在畫面底部的隨機彈出文字 */
+#random-message {
     font-size: 24px;
     font-weight: bold;
+    color: yellow;
     position: absolute;
-    bottom: 20px;
-    width: 100%;
-    text-align: center;
+    bottom: 100px; /* 確保固定在底部 */
+    left: 50%;
+    transform: translateX(-50%);
     display: none;
-    color: #ffd700;
+    animation: popup 0.5s ease-in-out;
+}
+
+/* 彈出動畫 */
+@keyframes popup {
+    0% { transform: scale(0.5); opacity: 0; }
+    50% { transform: scale(1.2); opacity: 1; }
+    100% { transform: scale(1); }
 }
