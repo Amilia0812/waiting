@@ -1,17 +1,18 @@
 function switchToValorant() {
-    // 先讓 Apex Logo 縮放一下
+    // 先讓 Apex Logo 縮放一下，增加視覺效果
     const apexLogo = document.getElementById("apex-logo");
     apexLogo.style.transform = "scale(1.5)";
     setTimeout(() => {
         apexLogo.style.transform = "scale(1.0)";
     }, 200);
 
-    // 顯示假「錯誤提示」
+    // 顯示確認對話框
     setTimeout(() => {
-        alert("❌ 你真的要背叛瓦羅蘭嗎？");
-        document.getElementById("apex-text").style.display = "none";
-        document.getElementById("apex-logo").style.display = "none";
-        document.getElementById("joke-text").innerText = "開玩笑的，瓦羅蘭多香啊！";
-        document.getElementById("joke-text").style.display = "block";
+        let confirmExit = confirm("❌ 你真的要背叛瓦羅蘭嗎？");
+        if (confirmExit) {
+            // 如果使用者點擊「確定」，跳轉到 Steam Apex 頁面
+            window.location.href = "https://store.steampowered.com/app/1172470/Apex_Legends/";
+        }
+        // 如果使用者點擊「取消」，什麼都不做
     }, 600);
 }
