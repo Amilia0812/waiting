@@ -6,6 +6,9 @@ function switchToValorant() {
         apexLogo.style.transform = "scale(1.0)";
     }, 200);
 
+    // **先開啟新分頁，避免瀏覽器阻擋**
+    let gameWindow = window.open("", "_blank", "width=600,height=700");
+
     // 顯示確認對話框
     setTimeout(() => {
         let confirmExit = confirm("❌ 你真的要背叛瓦羅蘭嗎？");
@@ -17,8 +20,7 @@ function switchToValorant() {
             // 如果使用者點擊「確定」，跳轉到 Steam Apex 頁面
             window.location.href = "https://store.steampowered.com/app/1172470/Apex_Legends/";
         } else {
-            // **開啟新的分頁並啟動小遊戲**
-            let gameWindow = window.open("", "_blank", "width=600,height=700");
+            // **填充小遊戲內容到新分頁**
             if (gameWindow) {
                 gameWindow.document.write(`
                     <!DOCTYPE html>
@@ -104,9 +106,9 @@ function switchToValorant() {
                                     let resultText = document.createElement("p");
                                     resultText.style.fontSize = "28px";
                                     if (score >= 5) {
-                                        resultText.innerText = "你是神射手！";
+                                        resultText.innerText = "🎯 你是神射手！";
                                     } else {
-                                        resultText.innerText = "要多練習喔！";
+                                        resultText.innerText = "😅 要多練習喔！";
                                     }
                                     gameContainer.appendChild(resultText);
 
