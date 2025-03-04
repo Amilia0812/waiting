@@ -109,10 +109,10 @@ function switchToValorant() {
 
                                 let resultText = document.createElement("p");
                                 resultText.style.fontSize = "28px";
-                                if (score >= 5) {
-                                    resultText.innerText = "你是神射手！";
+                                if (score >= 10) {
+                                    resultText.innerText = "你是福能！";
                                 } else {
-                                    resultText.innerText = "要多練習喔！";
+                                    resultText.innerText = "你這個爛鐵牌！";
                                 }
                                 gameContainer.appendChild(resultText);
 
