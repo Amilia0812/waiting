@@ -17,12 +17,13 @@ function switchToValorant() {
             // 如果使用者點擊「確定」，跳轉到 Steam Apex 頁面
             window.location.href = "https://store.steampowered.com/app/1172470/Apex_Legends/";
         } else {
-            // 開啟模擬《VALORANT》射擊靶場小遊戲
+            // **如果選擇「取消」，啟動模擬射擊遊戲**
             startShootingGame();
         }
     }, 600);
 }
 
+// **小遊戲：模擬射擊場**
 function startShootingGame() {
     let score = 0;
     let timeLeft = 10; // 限時 10 秒
@@ -87,9 +88,9 @@ function startShootingGame() {
             let resultText = document.createElement("p");
             resultText.style.fontSize = "28px";
             if (score >= 5) {
-                resultText.innerText = "🎯 你是神射手！";
+                resultText.innerText = "你是神射手！";
             } else {
-                resultText.innerText = "😅 要多練習喔！";
+                resultText.innerText = "要多練習喔！";
             }
             gameContainer.appendChild(resultText);
 
