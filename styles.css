@@ -93,3 +93,10 @@ h1 {
     50% { transform: scale(1.2); opacity: 1; }
     100% { transform: scale(1); }
 }
+.target {
+    transition: all 0.2s ease-in-out;
+}
+
+.target:hover {
+    transform: scale(1.2);
+}
