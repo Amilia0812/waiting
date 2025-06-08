@@ -3,32 +3,166 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>瓦羅蘭正在加載中</title>
+    <title>瓦羅蘭當機頁面</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="favicon.ico">
+    <style>
+        :root {
+            --red: #ff2a2a;
+            --bg-dark: #0d0d0d;
+            --text-light: #ffffff;
+        }
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            background: rgba(0, 0, 0, 0.7);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        header h1 {
+            margin: 0;
+            color: var(--red);
+        }
+        nav a {
+            color: var(--text-light);
+            margin-left: 1rem;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .hero {
+            background: url('valorant-background.png') no-repeat center center/cover;
+            height: 90vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+        }
+        .hero h2 {
+            font-size: clamp(2rem, 5vw, 4rem);
+            margin: 0;
+            animation: fadeIn 2s ease-in;
+        }
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 6px solid rgba(255, 255, 255, 0.3);
+            border-top: 6px solid var(--red);
+            border-radius: 50%;
+            margin-top: 2rem;
+            animation: spin 1s linear infinite;
+        }
+        section.features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            padding: 4rem 2rem;
+            background-color: #1a1a1a;
+        }
+        .card {
+            background-color: #222;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s;
+        }
+        .card:hover {
+            transform: scale(1.05);
+        }
+        .card h3 {
+            color: var(--red);
+        }
+        .cta {
+            padding: 3rem 2rem;
+            text-align: center;
+            background-color: #111;
+        }
+        .cta button {
+            font-size: 1.2rem;
+            padding: 1rem 2rem;
+            border: 2px solid white;
+            background: transparent;
+            color: white;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background 0.3s;
+        }
+        .cta button:hover {
+            background: rgba(255,255,255,0.2);
+        }
+        footer {
+            text-align: center;
+            padding: 2rem;
+            font-size: 0.9rem;
+            background-color: #0d0d0d;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
 </head>
 <body>
+<header>
+    <h1>瓦羅蘭 Loading</h1>
+    <nav>
+        <a href="#intro">介紹</a>
+        <a href="#shooting">小靶場</a>
+        <a href="#apex">鬼轉 Apex</a>
+    </nav>
+</header>
 
-<!-- 背景 -->
-<div class="background"></div>
-
-<div class="container">
-    <!-- 加載中文字 -->
-    <h1 id="loading-text"><span class="highlight">瓦羅蘭</span> 正在加載中，請耐心等待</h1>
-
-    <!-- 轉圈圈動畫 -->
-    <div class="loading-spinner"></div>
-
-    <!-- Apex 惡搞選項（小圖標） -->
-    <div id="apex-container">
-        <p id="apex-text">這裡建議鬼轉 Apex</p>
-        <img id="apex-logo" src="apex-icon.png" alt="Apex Legends">
-    </div>
-
-    <!-- 小靶場按鈕 -->
-    <button id="shooting-game-button">小靶場</button>
+<div class="hero">
+    <h2><span class="highlight">瓦羅蘭</span> 正在加載中…</h2>
+    <div class="spinner"></div>
 </div>
 
-<script src="script.js"></script>
+<section class="features" id="intro">
 
+    <div class="card">
+        <h3>小靶場挑戰</h3>
+        <p>訓練你的反應力與瞄準力，10 秒內擊中目標達成神射手稱號！</p>
+    </div>
+    <div class="card">
+        <h3>隱藏彩蛋</h3>
+        <p>敢點 Apex 嗎？小心背叛會帶來後果！</p>
+    </div>
+</section>
+
+<section class="cta" id="shooting">
+    <h2>準備好了嗎？挑戰神射手吧！</h2>
+    <button onclick="window.location.href='shooting.html'">🎯 啟動小靶場</button>
+</section>
+
+<section class="cta" id="apex">
+    <h2>或是... 你要轉投 Apex 陣營？</h2>
+    <button onclick="redirectApex()">👉 跳轉 Apex</button>
+</section>
+
+<footer>
+    <p>VALORANT 沒有贊助</p>
+</footer>
+
+<script>
+    function redirectApex() {
+        if (confirm("真的要轉投 Apex 嗎？")) {
+            window.open("https://store.steampowered.com/app/1172470/Apex_Legends/", "_blank");
+        }
+    }
+</script>
 </body>
 </html>

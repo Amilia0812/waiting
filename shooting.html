@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>瓦羅蘭 FPS 靶場</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background: #111;
+            color: white;
+            font-family: sans-serif;
+        }
+        canvas {
+            display: block;
+            background-color: #222;
+        }
+        #crosshair {
+            position: absolute;
+            color: red;
+            font-size: 24px;
+            pointer-events: none;
+            user-select: none;
+        }
+        #start-msg, #name-input {
+            position: absolute;
+            top: 35%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.7);
+            padding: 20px;
+            border: 2px solid white;
+            border-radius: 10px;
+            font-size: 18px;
+            text-align: center;
+        }
+        #score-board {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid white;
+        }
+        #leaderboard {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+<canvas id="gameCanvas"></canvas>
+<div id="crosshair">+</div>
+<div id="name-input">
+    請輸入你的名稱：<br>
+    <input type="text" id="playerName" /><br><br>
+    <button onclick="startGame()">開始遊戲</button>
+</div>
+<div id="start-msg" style="display:none">點擊畫面進入 FPS 模式<br>WASD 移動，滑鼠瞄準，點擊左鍵射擊</div>
+<div id="score-board">分數: 0</div>
+<div id="leaderboard"></div>
+
+<script>
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    const crosshair = document.getElementById('crosshair');
+    const startMsg = document.getElementById('start-msg');
+    const scoreBoard = document.getElementById('score-board');
+    const nameInput = document.getElementById('name-input');
+    const leaderboard = document.getElementById('leaderboard');
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let player = { x: canvas.width / 2, y: canvas.height / 2, speed: 3 };
+    let keys = {}, targets = [], score = 0;
+    let playerName = '';
+    let gameStarted = false;
+
+    function startGame() {
+        playerName = document.getElementById('playerName').value.trim() || '玩家';
+        nameInput.style.display = 'none';
+        startMsg.style.display = 'block';
+        setTimeout(() => {
+            startMsg.style.display = 'none';
+            canvas.requestPointerLock();
+            generateTargets();
+            gameStarted = true;
+            setTimeout(endGame, 15000); // 15秒後結束遊戲
+        }, 1000);
+    }
+
+    function endGame() {
+        alert(`${playerName} 的得分為：${score}`);
+        const records = JSON.parse(localStorage.getItem('leaderboard') || '[]');
+        records.push({ name: playerName, score });
+        records.sort((a, b) => b.score - a.score);
+        localStorage.setItem('leaderboard', JSON.stringify(records.slice(0, 5)));
+        updateLeaderboard();
+    }
+
+    function updateLeaderboard() {
+        const records = JSON.parse(localStorage.getItem('leaderboard') || '[]');
+        leaderboard.innerHTML = '<b>🏆 排行榜</b><br>' +
+            records.map(r => `${r.name}: ${r.score}`).join('<br>');
+    }
+
+    function generateTargets() {
+        for (let i = 0; i < 10; i++) {
+            targets.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                vx: Math.random() * 2 - 1,
+                vy: Math.random() * 2 - 1,
+                r: 20,
+                hit: false
+            });
+        }
+    }
+
+    function update() {
+        if (!gameStarted) return;
+        if (document.pointerLockElement === canvas) {
+            if (keys['w']) player.y -= player.speed;
+            if (keys['s']) player.y += player.speed;
+            if (keys['a']) player.x -= player.speed;
+            if (keys['d']) player.x += player.speed;
+        }
+        targets.forEach(t => {
+            t.x += t.vx * 2;
+            t.y += t.vy * 2;
+            if (t.x < 0 || t.x > canvas.width) t.vx *= -1;
+            if (t.y < 0 || t.y > canvas.height) t.vy *= -1;
+        });
+        crosshair.style.left = player.x - 6 + 'px';
+        crosshair.style.top = player.y - 12 + 'px';
+    }
+
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        targets.forEach(t => {
+            if (!t.hit) {
+                ctx.beginPath();
+                ctx.arc(t.x, t.y, t.r, 0, Math.PI * 2);
+                ctx.fillStyle = 'red';
+                ctx.fill();
+            }
+        });
+    }
+
+    function gameLoop() {
+        update();
+        draw();
+        requestAnimationFrame(gameLoop);
+    }
+
+    document.addEventListener('keydown', e => keys[e.key.toLowerCase()] = true);
+    document.addEventListener('keyup', e => keys[e.key.toLowerCase()] = false);
+
+    document.addEventListener('click', () => {
+        if (!gameStarted) return;
+        const aimX = player.x;
+        const aimY = player.y;
+        targets.forEach(t => {
+            const dx = t.x - aimX;
+            const dy = t.y - aimY;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < t.r + 5 && !t.hit) {
+                t.hit = true;
+                score++;
+                scoreBoard.innerText = `分數: ${score}`;
+            }
+        });
+    });
+
+    document.addEventListener('mousemove', e => {
+        if (document.pointerLockElement === canvas) {
+            player.x += e.movementX;
+            player.y += e.movementY;
+            player.x = Math.max(0, Math.min(canvas.width, player.x));
+            player.y = Math.max(0, Math.min(canvas.height, player.y));
+        }
+    });
+
+    gameLoop();
+    updateLeaderboard();
+</script>
+</body>
+</html>
